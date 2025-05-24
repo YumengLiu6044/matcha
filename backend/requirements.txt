@@ -3,3 +3,6 @@ langchain-google-genai
 langchain
 pydantic
 dotenv
+fastapi[standard]
+uvicorn[standard]
+httpx
