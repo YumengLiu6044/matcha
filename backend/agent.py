@@ -3,16 +3,14 @@ from pprint import pprint
 from dotenv import load_dotenv
 load_dotenv()
 
-# llm_agent.py
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.messages import HumanMessage, AIMessage
+from langchain_core.messages import AIMessage
 from langchain_core.output_parsers import JsonOutputParser
 from pydantic import BaseModel, Field
 from fetch_campus_group import campus_groups_events_tool
 from typing import Optional
-import json
 
 # --- Pydantic Models for LLM Output ---
 class JointRecommendedEvent(BaseModel):
