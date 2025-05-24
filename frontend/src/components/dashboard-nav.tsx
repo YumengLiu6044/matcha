@@ -5,20 +5,20 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  CalendarDays,
-  Home,
-  LogOut,
-  Settings,
-  User,
-  Users,
+	CalendarDays,
+	Home,
+	LogOut,
+	Settings,
+	User,
+	Users,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -28,143 +28,158 @@ import { doc, getDoc } from "firebase/firestore";
 import { getProfileURL } from "@/util/firebase-utils";
 
 export default function DashboardNav() {
-  const pathname = usePathname();
+	const pathname = usePathname();
 
-  const navItems = [
-    { href: "/dashboard", label: "Dashboard", icon: Home },
-    { href: "/dashboard/matches", label: "Matches", icon: Users },
-    { href: "/dashboard/hangouts", label: "Hangouts", icon: CalendarDays },
-    { href: "/dashboard/profile", label: "Profile", icon: User },
-  ];
+	const navItems = [
+		{ href: "/dashboard", label: "Dashboard", icon: Home },
+		{ href: "/dashboard/matches", label: "Matches", icon: Users },
+		{ href: "/dashboard/hangouts", label: "Hangouts", icon: CalendarDays },
+		{ href: "/dashboard/profile", label: "Profile", icon: User },
+	];
 
-  const [name, setName] = useState("Student");
-  const [email, setEmail] = useState("student@uci.edu");
-  const [profileURL, setProfileURL] = useState("");
+	const [name, setName] = useState("Student");
+	const [email, setEmail] = useState("student@uci.edu");
+	const [profileURL, setProfileURL] = useState("");
 
-  useEffect(() => {
-    const auth = getAuth(app);
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        console.log("User not logged in");
-        window.location.href = "/login";
-        return;
-      }
-      const userRef = doc(db, "users", user.uid);
-      getDoc(userRef).then((userDoc) => {
-        if (!userDoc.exists()) {
-          console.log("User document does not exist");
-          return;
-        }
-        const userData = userDoc.data();
-        setName(userData.name || name);
-        setEmail(userData.email || email);
-        if (userData.profilePicRef) {
-          getProfileURL(userData.profilePicRef).then((url) =>
-            setProfileURL(url ?? "")
-          );
-        }
-      });
-    });
+	useEffect(() => {
+		const auth = getAuth(app);
+		const unsubscribe = onAuthStateChanged(auth, (user) => {
+			if (!user) {
+				console.log("User not logged in");
+				window.location.href = "/login";
+				return;
+			}
+			const userRef = doc(db, "users", user.uid);
+			getDoc(userRef).then((userDoc) => {
+				if (!userDoc.exists()) {
+					console.log("User document does not exist");
+					return;
+				}
+				const userData = userDoc.data();
+				setName(userData.name || name);
+				setEmail(userData.email || email);
+				if (userData.profilePicRef) {
+					getProfileURL(userData.profilePicRef).then((url) =>
+						setProfileURL(url ?? "")
+					);
+				}
+			});
+		});
 
-    return () => unsubscribe();
-  }, []);
+		return () => unsubscribe();
+	}, []);
 
-  return (
-    <header className="border-b">
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Link href="/dashboard">
-            <div className="flex items-center gap-2">
-              <Image
-                src="/images/matcha-logo.png"
-                alt="Matcha Logo"
-                width={32}
-                height={32}
-                className="rounded-full"
-                onClick={() => {
-                  window.location.href = "/";
-                }}
-              />
-              <span className="text-xl font-bold text-primary">Matcha</span>
-            </div>
-          </Link>
-        </div>
+	return (
+		<header className="border-b">
+			<div className="container flex h-16 items-center justify-between">
+				<div className="flex items-center gap-2">
+					<Link href="/dashboard">
+						<div
+							className="flex items-center gap-2"
+							onClick={() => {
+								window.location.href = "/";
+							}}
+						>
+							<Image
+								src="/images/matcha-logo.png"
+								alt="Matcha Logo"
+								width={32}
+								height={32}
+								className="rounded-full"
+							/>
+							<span className="text-xl font-bold text-primary">
+								Matcha
+							</span>
+						</div>
+					</Link>
+				</div>
 
-        <nav className="hidden md:flex">
-          <ul className="flex items-center gap-6">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = pathname === item.href;
+				<nav className="hidden md:flex">
+					<ul className="flex items-center gap-6">
+						{navItems.map((item) => {
+							const Icon = item.icon;
+							const isActive = pathname === item.href;
 
-              return (
-                <li key={item.href}>
-                  <Link href={item.href}>
-                    <Button
-                      variant={isActive ? "default" : "ghost"}
-                      className="gap-2"
-                    >
-                      <Icon className="h-4 w-4" />
-                      {item.label}
-                    </Button>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+							return (
+								<li key={item.href}>
+									<Link href={item.href}>
+										<Button
+											variant={
+												isActive ? "default" : "ghost"
+											}
+											className="gap-2"
+										>
+											<Icon className="h-4 w-4" />
+											{item.label}
+										</Button>
+									</Link>
+								</li>
+							);
+						})}
+					</ul>
+				</nav>
 
-        <div className="flex items-center gap-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={profileURL} alt="User" />
-                  <AvatarFallback>{name}</AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
-              <DropdownMenuLabel className="font-normal">
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{name}</p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {email}
-                  </p>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link
-                  href="/dashboard/profile"
-                  className="flex w-full cursor-pointer items-center"
-                >
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link
-                  href="/dashboard/settings"
-                  className="flex w-full cursor-pointer items-center"
-                >
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Settings</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link
-                  href="/"
-                  className="flex w-full cursor-pointer items-center"
-                >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
-    </header>
-  );
+				<div className="flex items-center gap-4">
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button
+								variant="ghost"
+								className="relative h-8 w-8 rounded-full"
+							>
+								<Avatar className="h-8 w-8">
+									<AvatarImage src={profileURL} alt="User" />
+									<AvatarFallback>{name}</AvatarFallback>
+								</Avatar>
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent
+							className="w-56"
+							align="end"
+							forceMount
+						>
+							<DropdownMenuLabel className="font-normal">
+								<div className="flex flex-col space-y-1">
+									<p className="text-sm font-medium leading-none">
+										{name}
+									</p>
+									<p className="text-xs leading-none text-muted-foreground">
+										{email}
+									</p>
+								</div>
+							</DropdownMenuLabel>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem asChild>
+								<Link
+									href="/dashboard/profile"
+									className="flex w-full cursor-pointer items-center"
+								>
+									<User className="mr-2 h-4 w-4" />
+									<span>Profile</span>
+								</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem asChild>
+								<Link
+									href="/dashboard/settings"
+									className="flex w-full cursor-pointer items-center"
+								>
+									<Settings className="mr-2 h-4 w-4" />
+									<span>Settings</span>
+								</Link>
+							</DropdownMenuItem>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem asChild>
+								<Link
+									href="/"
+									className="flex w-full cursor-pointer items-center"
+								>
+									<LogOut className="mr-2 h-4 w-4" />
+									<span>Log out</span>
+								</Link>
+							</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
+				</div>
+			</div>
+		</header>
+	);
 }
