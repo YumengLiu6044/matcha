@@ -1,5 +1,4 @@
 import { UUID } from "crypto";
-import { User } from "firebase/auth";
 
 export type UserData = {
 	availability?: Record<string, { start: string; end: string }>;
@@ -9,6 +8,7 @@ export type UserData = {
 	year?: string;
 	profileURL?: string;
 	createdAt?: string;
+  bio?: string
 	interests: string[];
 	uid?: string;
 };
@@ -29,6 +29,12 @@ export type JointRecommendationOutput = {
 	message: string;
 };
 
-export type Hangout = JointRecommendedEvent & { users: UserData[];
-  id: UUID
- };
+export type Hangout = JointRecommendedEvent & { users: UserData[]; id: UUID };
+
+export type UserDataStore = {
+  self: UserData
+  others: UserData[]
+
+  setSelf: (newState: UserData) => void
+  setOthers: (newState: UserData[]) => void
+}

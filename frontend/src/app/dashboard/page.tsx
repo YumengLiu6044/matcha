@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +23,11 @@ import {
 	Users,
 } from "lucide-react";
 import { Hangout, JointRecommendedEvent, UserData } from "@/util/types";
+import { getAuth, onAuthStateChanged } from "@firebase/auth";
+import { app, db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { useUserDataStore } from "@/util/store";
+import { getProfileURL } from "@/util/firebase-utils";
 
 // Sample campus activities
 const CAMPUS_ACTIVITIES = [
@@ -145,6 +150,46 @@ export default function DashboardPage() {
 	const rejectMatch = () => {
 		generateNewMatch();
 	};
+
+	const setSelfUserData = useUserDataStore.getState().setSelf;
+
+	useEffect(() => {
+		const auth = getAuth(app);
+		const unsubscribe = onAuthStateChanged(auth, (user) => {
+			if (!user) {
+				console.log("User not logged in");
+				window.location.href = "/login";
+				return;
+			}
+			const userRef = doc(db, "users", user.uid);
+			getDoc(userRef).then((userDoc) => {
+				if (!userDoc.exists()) {
+					console.log("User document does not exist");
+					return;
+				}
+				const userData = userDoc.data();
+				let profileURL = "";
+				getProfileURL(userData.profilePicRef)
+					.then((url) => {
+						profileURL = url ?? "";
+					})
+					.finally(() => {
+						setSelfUserData({
+							name: userData.name,
+							email: userData.email,
+							major: userData.major,
+							year: userData.year,
+							bio: userData.bio,
+							availability: userData.availability,
+							profileURL: profileURL,
+							interests: userData.interests,
+						});
+					});
+			});
+		});
+
+		return () => unsubscribe();
+	}, []);
 
 	return (
 		<div className="container py-8">
