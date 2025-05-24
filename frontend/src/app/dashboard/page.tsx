@@ -31,7 +31,7 @@ const USERS = [
     major: "Computer Science",
     year: "Junior",
     interests: ["Technology", "Gaming", "Music"],
-    avatar: "/placeholder.svg?height=80&width=80",
+    avatar: "https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg?height=80&width=80",
   },
   {
     id: 2,
@@ -39,7 +39,7 @@ const USERS = [
     major: "Biology",
     year: "Sophomore",
     interests: ["Science", "Outdoor Activities", "Reading"],
-    avatar: "/placeholder.svg?height=80&width=80",
+    avatar: "https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg?height=80&width=80",
   },
   {
     id: 3,
@@ -47,7 +47,7 @@ const USERS = [
     major: "Business Economics",
     year: "Senior",
     interests: ["Entrepreneurship", "Sports & Fitness", "Travel"],
-    avatar: "/placeholder.svg?height=80&width=80",
+    avatar: "https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg?height=80&width=80",
   },
 ]
 
