@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -21,7 +20,11 @@ import {
 	ThumbsUp,
 } from "lucide-react";
 import { useHangoutStore, useUserDataStore } from "@/util/store";
-import { acceptMatch, generateMatch, getHangoutRecommendation } from "@/util/fetch";
+import {
+	acceptMatch,
+	generateMatch,
+	getHangoutRecommendation,
+} from "@/util/fetch";
 
 // Campus activities
 const CAMPUS_ACTIVITIES = [
@@ -35,16 +38,18 @@ const CAMPUS_ACTIVITIES = [
 ];
 
 export default function MatchesPage() {
-	const [loading, setLoading] = useState(false);
+	const activity = CAMPUS_ACTIVITIES[0];
+	const date = "May 15, 2025";
+	const time = "3:00 PM";
+	const location = "Anteater Recreation Center";
+
 	const currentMatchIndex = useUserDataStore((state) => state.suggestedIndex);
 	const others = useUserDataStore((state) => state.others);
 	const suggestedHangout = useHangoutStore((state) => state.suggestedHangout);
-	const [activity, setActivity] = useState(CAMPUS_ACTIVITIES[0]);
-	const [date, setDate] = useState("May 15, 2025");
-	const [time, setTime] = useState("3:00 PM");
-	const [location, setLocation] = useState("Anteater Recreation Center");
+	const loading = useHangoutStore((state) => state.isLoading);
+
 	const pendingHangouts = useHangoutStore((state) => state.pendingHangouts);
-  
+
 	return (
 		<div className="container py-8">
 			<div className="mb-8">
@@ -237,13 +242,16 @@ export default function MatchesPage() {
 											<Avatar>
 												<AvatarImage
 													src={
-														hangout.users[0].profileURL ||
+														hangout.users[0]
+															.profileURL ||
 														"/placeholder.svg"
 													}
 													alt={hangout.users[0].name}
 												/>
 												<AvatarFallback>
-													{hangout.users[0].name.charAt(0)}
+													{hangout.users[0].name.charAt(
+														0
+													)}
 												</AvatarFallback>
 											</Avatar>
 											<div className="flex-1">
