@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -11,8 +13,11 @@ import {
   ArrowRight,
   Star,
 } from "lucide-react";
+import { useRef } from "react";
 
 export default function Home() {
+  const howItWorksRef = useRef<HTMLDivElement>(null);
+
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-br from-green-50 via-white to-green-50">
       {/* Header */}
@@ -101,22 +106,26 @@ export default function Home() {
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <Link href="/about">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-green-200 hover:bg-green-50 text-lg px-8 py-6 animate-fade-in"
-                  style={{ animationDelay: "0.7s", animationFillMode: "both" }}
-                >
-                  Learn More
-                </Button>
-              </Link>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-green-200 hover:bg-green-50 text-lg px-8 py-6 animate-fade-in"
+                style={{ animationDelay: "0.7s", animationFillMode: "both" }}
+                onClick={() => {
+                  howItWorksRef.current?.scrollIntoView({ behavior: "smooth" });
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 800);
+                }}
+              >
+                Learn More
+              </Button>
             </div>
           </div>
         </section>
 
         {/* How It Works */}
-        <section className="py-20 bg-white">
+        <section ref={howItWorksRef} className="py-20 bg-white">
           <div className="container">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold mb-4">How It Works</h2>
@@ -125,7 +134,6 @@ export default function Home() {
                 UCI
               </p>
             </div>
-
             <div className="grid gap-8 md:grid-cols-3">
               <Card
                 className="relative overflow-hidden border-0 shadow-xl bg-gradient-to-br from-green-50 to-white group hover:shadow-2xl transition-all duration-300 animate-fade-in"
@@ -147,7 +155,6 @@ export default function Home() {
                   </p>
                 </CardContent>
               </Card>
-
               <Card
                 className="relative overflow-hidden border-0 shadow-xl bg-gradient-to-br from-green-50 to-white group hover:shadow-2xl transition-all duration-300 animate-fade-in"
                 style={{ animationDelay: "0.7s", animationFillMode: "both" }}
@@ -166,7 +173,6 @@ export default function Home() {
                   </p>
                 </CardContent>
               </Card>
-
               <Card
                 className="relative overflow-hidden border-0 shadow-xl bg-gradient-to-br from-green-50 to-white group hover:shadow-2xl transition-all duration-300 animate-fade-in"
                 style={{ animationDelay: "1.4s", animationFillMode: "both" }}
