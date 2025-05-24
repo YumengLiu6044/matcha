@@ -23,7 +23,7 @@ export default function Home() {
       </header>
       <main className="flex-1">
         <section className="py-20">
-          <div className="container w-full flex flex-col items-center text-center">
+          <div className="container flex flex-col items-center text-center">
             <div className="relative mb-8 h-32 w-32">
               <Image src="/images/matcha-logo.png" alt="Matcha Logo" fill className="rounded-full object-cover" />
             </div>
