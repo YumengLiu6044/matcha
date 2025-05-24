@@ -22,108 +22,22 @@ import {
 	ThumbsUp,
 	Users,
 } from "lucide-react";
-import { Hangout, JointRecommendedEvent, UserData } from "@/util/types";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import { app, db } from "@/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { useUserDataStore } from "@/util/store";
+import { useHangoutStore, useUserDataStore } from "@/util/store";
 import { getProfileURL } from "@/util/firebase-utils";
-
-// Sample campus activities
-const CAMPUS_ACTIVITIES = [
-	"Visit the Anteater Recreation Center together",
-	"Study session at Langson Library",
-	"Coffee chat at the Student Center",
-	"Attend a club meeting together",
-	"Explore the Aldrich Park",
-	"Grab lunch at the Food Court",
-	"Check out an art exhibition at the Beall Center",
-	"Watch a movie at the Student Center",
-	"Attend a campus workshop or seminar",
-	"Play basketball at the ARC courts",
-];
-
+import { acceptMatch, getHangoutRecommendation } from "@/util/fetch";
+import { generateMatch } from "@/util/fetch";
 
 export default function DashboardPage() {
 	const [loading, setLoading] = useState(false);
-  const USERS = useUserDataStore((state) => state.others)
-	const [currentMatch, setCurrentMatch] = useState(USERS[0]);
-	const [activity, setActivity] = useState(CAMPUS_ACTIVITIES[0]);
-	const [date, setDate] = useState("May 15, 2025");
-	const [time, setTime] = useState("3:00 PM");
-	const [location, setLocation] = useState("Anteater Recreation Center");
-	const [pendingHangouts, setPendingHangouts] = useState<Hangout[]>([]);
-	const [generateHangout, setGeneratedHangout] = useState<Hangout>();
-	const [upcomingHangouts, setUpcomingHangouts] = useState<Hangout[]>([]);
+	const others = useUserDataStore((state) => state.others);
+	const currentMatchIndex = useUserDataStore((state) => state.suggestedIndex);
 
-	const generateNewMatch = async () => {
-		setLoading(true);
-
-		// Get random user
-		const randomUser = USERS[Math.floor(Math.random() * USERS.length)];
-
-		try {
-			const today = new Date();
-			const futureDate = new Date(today);
-			futureDate.setDate(
-				today.getDate() + Math.floor(Math.random() * 7) + 1
-			);
-
-			const month = futureDate.toLocaleString("default", {
-				month: "long",
-			});
-			const day = futureDate.getDate();
-			const year = futureDate.getFullYear();
-			const formattedDate = `${month} ${day}, ${year}`;
-
-			const hours = Math.floor(Math.random() * 8) + 10; // 10 AM to 6 PM
-			const minutes = [0, 30][Math.floor(Math.random() * 2)];
-			const ampm = hours >= 12 ? "PM" : "AM";
-			const formattedHours = hours % 12 || 12;
-			const formattedTime = `${formattedHours}:${
-				minutes === 0 ? "00" : minutes
-			} ${ampm}`;
-
-			// Set new match data
-			setCurrentMatch(randomUser);
-			setActivity(
-				CAMPUS_ACTIVITIES[
-					Math.floor(Math.random() * CAMPUS_ACTIVITIES.length)
-				]
-			);
-			setDate(formattedDate);
-			setTime(formattedTime);
-			setLocation("UCI Campus");
-		} catch (error) {
-			console.error("Error generating match:", error);
-			// Fallback to random selection if AI fails
-			setCurrentMatch(randomUser);
-			setActivity(
-				CAMPUS_ACTIVITIES[
-					Math.floor(Math.random() * CAMPUS_ACTIVITIES.length)
-				]
-			);
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	const acceptMatch = () => {
-		// const newHangout: Hangout = {
-		//   users: [currentMatch],
-		//   name: activity,
-		//   description: ""
-		//   time,
-		//   location,
-		// }
-
-		// setPendingHangouts([...pendingHangouts, newHangout])
-		generateNewMatch();
-	};
-
-	const rejectMatch = () => {
-		generateNewMatch();
-	};
+	const pendingHangouts = useHangoutStore((state) => state.pendingHangouts);
+	const isLoadingRecommendation = useHangoutStore((state) => state.isLoading);
+	const suggestedHangout = useHangoutStore((state) => state.suggestedHangout);
 
 	const setSelfUserData = useUserDataStore.getState().setSelf;
 
@@ -158,6 +72,8 @@ export default function DashboardPage() {
 							profileURL: profileURL,
 							interests: userData.interests,
 						});
+
+						generateMatch();
 					});
 			});
 		});
@@ -185,54 +101,73 @@ export default function DashboardPage() {
 							<div className="flex flex-col items-center space-y-4">
 								<Avatar className="h-20 w-20">
 									<AvatarImage
-										src={currentMatch.profileURL}
-										alt={currentMatch.name}
+										src={
+											others[currentMatchIndex]
+												.profileURL ?? ""
+										}
+										alt={others[currentMatchIndex].name}
 									/>
 									<AvatarFallback>
-										{currentMatch.name.charAt(0)}
+										{others[currentMatchIndex].name.charAt(
+											0
+										)}
 									</AvatarFallback>
 								</Avatar>
 								<div className="text-center">
 									<h3 className="text-xl font-semibold">
-										{currentMatch.name}
+										{others[currentMatchIndex].name}
 									</h3>
 									<p className="text-muted-foreground">
-										{currentMatch.major},{" "}
-										{currentMatch.year}
+										{others[currentMatchIndex].major},{" "}
+										{others[currentMatchIndex].year}
 									</p>
 								</div>
 								<div className="flex flex-wrap justify-center gap-2">
-									{currentMatch.interests.map((interest) => (
-										<Badge
-											key={interest}
-											variant="secondary"
-										>
-											{interest}
-										</Badge>
-									))}
+									{others[currentMatchIndex].interests.map(
+										(interest) => (
+											<Badge
+												key={interest}
+												variant="secondary"
+											>
+												{interest}
+											</Badge>
+										)
+									)}
 								</div>
 
 								<div className="mt-6 w-full rounded-lg bg-accent p-4">
 									<h4 className="mb-2 font-semibold">
 										Suggested Hangout
 									</h4>
-									<div className="space-y-2">
-										<div className="flex items-center gap-2">
-											<CalendarDays className="h-4 w-4 text-muted-foreground" />
-											<span>{date}</span>
+									{isLoadingRecommendation ? (
+										<div>Loading</div>
+									) : (
+										<div className="space-y-2">
+											<div className="flex items-center gap-2">
+												<CalendarDays className="h-4 w-4 text-muted-foreground" />
+												<span>
+													{suggestedHangout?.date ??
+														"May 25, 2025"}
+												</span>
+											</div>
+											<div className="flex items-center gap-2">
+												<Clock className="h-4 w-4 text-muted-foreground" />
+												<span>
+													{suggestedHangout?.time ??
+														"10:00 AM"}
+												</span>
+											</div>
+											<div className="flex items-center gap-2">
+												<MapPin className="h-4 w-4 text-muted-foreground" />
+												<span>
+													{suggestedHangout?.location}
+												</span>
+											</div>
+											<div className="mt-2 font-medium text-primary">
+												{suggestedHangout?.name}
+											</div>
 										</div>
-										<div className="flex items-center gap-2">
-											<Clock className="h-4 w-4 text-muted-foreground" />
-											<span>{time}</span>
-										</div>
-										<div className="flex items-center gap-2">
-											<MapPin className="h-4 w-4 text-muted-foreground" />
-											<span>{location}</span>
-										</div>
-										<div className="mt-2 font-medium text-primary">
-											{activity}
-										</div>
-									</div>
+									)}
 								</div>
 							</div>
 						</CardContent>
@@ -241,7 +176,7 @@ export default function DashboardPage() {
 								variant="outline"
 								size="lg"
 								className="gap-2"
-								onClick={rejectMatch}
+								onClick={generateMatch}
 								disabled={loading}
 							>
 								<ThumbsDown className="h-4 w-4" />
@@ -250,7 +185,7 @@ export default function DashboardPage() {
 							<Button
 								variant="outline"
 								size="icon"
-								onClick={generateNewMatch}
+								onClick={getHangoutRecommendation}
 								disabled={loading}
 								className="rounded-full"
 							>
@@ -349,11 +284,11 @@ export default function DashboardPage() {
 							</div>
 							<Badge variant="outline" className="gap-1">
 								<CalendarDays className="h-3 w-3" />
-								{upcomingHangouts.length}
+								{0}
 							</Badge>
 						</CardHeader>
 						<CardContent>
-							{upcomingHangouts.length === 0 ? (
+							{true ? (
 								<div className="flex h-[100px] flex-col items-center justify-center rounded-lg border border-dashed p-4 text-center">
 									<p className="text-sm text-muted-foreground">
 										No upcoming hangouts
@@ -364,7 +299,7 @@ export default function DashboardPage() {
 								</div>
 							) : (
 								<div className="space-y-4">
-									{upcomingHangouts.map((hangout, index) => (
+									{pendingHangouts.map((hangout, index) => (
 										<div
 											key={index}
 											className="flex items-center gap-4 rounded-lg border p-4"
