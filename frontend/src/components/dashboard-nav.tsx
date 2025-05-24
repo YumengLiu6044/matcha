@@ -25,7 +25,7 @@ import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app, db } from "@/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { getProfileURL } from "@/util/firebase-util";
+import { getProfileURL } from "@/util/firebase-utils";
 
 export default function DashboardNav() {
   const pathname = usePathname();
