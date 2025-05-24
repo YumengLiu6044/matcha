@@ -1,10 +1,9 @@
 import dataclasses
-
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Dict, Any
 from starlette.middleware.cors import CORSMiddleware
-from backend.agent import get_joint_recommendation
+from agent import get_joint_recommendation
 
 app = FastAPI(
     title="UCI Friendship Matching API",

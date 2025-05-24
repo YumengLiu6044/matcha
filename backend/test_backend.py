@@ -1,5 +1,5 @@
 import unittest
-from backend.main import app, ResponseModel
+from main import app, ResponseModel
 from fastapi.testclient import TestClient
 
 test_client = TestClient(app)
