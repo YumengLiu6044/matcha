@@ -4,21 +4,6 @@ import { Button } from "@/components/ui/button"
 
 export default function Home() {
   return (
-    <div className="bg-background text-foreground">
-      <div className="container mx-auto px-4">  
-        <div className="flex items-center justify-between py-4">
-          <Link href="/">
-            <Image src="/images/matcha-logo.png" alt="Matcha Logo" width={40} height={40} className="rounded-full" />
-          </Link>
-          <nav className="flex items-center gap-4">
-            <Link href="/login">
-              <Button variant="ghost">Log in</Button>
-            </Link>
-            <Link href="/signup">
-              <Button>Sign up</Button>
-            </Link>
-          </nav>
-        </div>
     <div className="flex min-h-screen flex-col">
       <header className="border-b">
         <div className="container flex h-16 items-center justify-between">
