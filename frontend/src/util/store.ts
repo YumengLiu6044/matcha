@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { UserData, UserDataStore } from './types'
+import { HangoutStore, UserData, UserDataStore } from './types'
+
 
 export const useUserDataStore = create<UserDataStore>((set) => ({
   self: {
@@ -7,7 +8,7 @@ export const useUserDataStore = create<UserDataStore>((set) => ({
     interests: [],
     email: 'student@uci.edu',
   },
-
+  suggestedIndex: 0,
   others: [
     {
       name: "Alex Kim",
@@ -61,6 +62,16 @@ export const useUserDataStore = create<UserDataStore>((set) => ({
   ],
 
   setSelf: (newState: UserData) => set({ self: newState }),
-
+  setSuggestedIndex: (newState: number) => set({suggestedIndex: newState}),
   setOthers: (newState: UserData[]) => set({ others: newState }),
+}))
+
+export const useHangoutStore = create<HangoutStore>((set) => ({
+  pendingHangouts: [],
+  suggestedHangout: null,
+  pastHangouts: [],
+  isLoading: false,
+  setSuggestedHangout: (newState) => set({suggestedHangout: newState}),
+  setPendingHangouts: (newState) => set({ pendingHangouts: newState }),
+  setIsLoading: (newState) => set({ isLoading: newState }),
 }))
