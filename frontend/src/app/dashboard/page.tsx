@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { CalendarDays, Clock, MapPin, RefreshCw, ThumbsDown, ThumbsUp, Users } from "lucide-react"
+import { UserData } from "@/util/types"
 
 
 // Sample campus activities
@@ -24,30 +25,27 @@ const CAMPUS_ACTIVITIES = [
 ]
 
 // Sample user data
-const USERS = [
+const USERS: UserData[] = [
   {
-    id: 1,
     name: "Alex Kim",
     major: "Computer Science",
     year: "Junior",
     interests: ["Technology", "Gaming", "Music"],
-    avatar: "https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg?height=80&width=80",
+    profileURL: "https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg?height=80&width=80",
   },
   {
-    id: 2,
     name: "Jordan Lee",
     major: "Biology",
     year: "Sophomore",
     interests: ["Science", "Outdoor Activities", "Reading"],
-    avatar: "https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg?height=80&width=80",
+    profileURL: "https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg?height=80&width=80",
   },
   {
-    id: 3,
     name: "Taylor Chen",
     major: "Business Economics",
     year: "Senior",
     interests: ["Entrepreneurship", "Sports & Fitness", "Travel"],
-    avatar: "https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg?height=80&width=80",
+    profileURL: "https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg?height=80&width=80",
   },
 ]
 
@@ -77,8 +75,6 @@ export default function DashboardPage() {
     const randomUser = USERS[Math.floor(Math.random() * USERS.length)]
 
     try {
-
-      // Generate random date and time
       const today = new Date()
       const futureDate = new Date(today)
       futureDate.setDate(today.getDate() + Math.floor(Math.random() * 7) + 1)
@@ -146,7 +142,7 @@ export default function DashboardPage() {
             <CardContent>
               <div className="flex flex-col items-center space-y-4">
                 <Avatar className="h-20 w-20">
-                  <AvatarImage src={currentMatch.avatar || "/placeholder.svg"} alt={currentMatch.name} />
+                  <AvatarImage src={currentMatch.profileURL} alt={currentMatch.name} />
                   <AvatarFallback>{currentMatch.name.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div className="text-center">
