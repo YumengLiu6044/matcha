@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowLeft, Sparkles } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TimePickerInput } from "@/components/time-picker-input";
@@ -72,6 +73,7 @@ export default function OnboardingPage() {
   });
   const [loading, setLoading] = useState(false);
   const [authisReady, setAuthIsReady] = useState(false);
+
   const handleInterestToggle = (interest: string) => {
     setSelectedInterests((prev) =>
       prev.includes(interest)
@@ -140,70 +142,97 @@ export default function OnboardingPage() {
   }, []);
 
   return (
-    <div className="container flex min-h-screen flex-col items-center justify-center py-10">
-      <Link href="/" className="absolute left-4 top-4 md:left-8 md:top-8">
-        <Button variant="ghost" className="gap-2">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-green-50 flex flex-col items-center justify-center py-10 px-4">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-gradient-to-br from-green-100/30 via-transparent to-green-100/20"></div>
+      <div className="absolute top-20 left-10 w-72 h-72 bg-green-200/20 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-green-300/20 rounded-full blur-3xl"></div>
+
+      <Link href="/" className="absolute left-4 top-4 md:left-8 md:top-8 z-10">
+        <Button variant="ghost" className="gap-2 hover:bg-white/80">
+          <ArrowLeft className="h-4 w-4" />
           <Image
             src="/images/matcha-logo.png"
             alt="Matcha Logo"
-            width={40}
-            height={40}
+            width={24}
+            height={24}
             className="rounded-full"
           />
-          <span className="font-bold text-2xl text-primary">Matcha</span>
+          <span className="font-bold text-green-600">Back to Matcha</span>
         </Button>
       </Link>
 
-      <div className="mb-8 flex w-full max-w-md items-center justify-between">
+      {/* Progress Indicator */}
+      <div className="mb-8 flex w-full max-w-md items-center justify-between relative z-10">
         <div className="flex items-center gap-2">
           <div
-            className={`flex h-8 w-8 items-center justify-center rounded-full ${
+            className={`flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 ${
               step >= 1
-                ? "bg-primary text-white"
-                : "border border-muted-foreground text-muted-foreground"
+                ? "bg-gradient-to-r from-green-600 to-green-500 text-white shadow-lg"
+                : "border-2 border-gray-300 text-gray-400 bg-white"
             }`}
           >
-            1
+            {step >= 1 ? <Sparkles className="h-4 w-4" /> : "1"}
           </div>
-          <span className={step >= 1 ? "font-medium" : "text-muted-foreground"}>
+          <span
+            className={`text-sm font-medium transition-colors ${
+              step >= 1 ? "text-green-700" : "text-gray-400"
+            }`}
+          >
             Interests
           </span>
         </div>
-        <div className="h-0.5 w-10 bg-muted"></div>
+        <div
+          className={`h-1 w-10 rounded-full transition-colors ${
+            step >= 2 ? "bg-green-500" : "bg-gray-200"
+          }`}
+        ></div>
         <div className="flex items-center gap-2">
           <div
-            className={`flex h-8 w-8 items-center justify-center rounded-full ${
+            className={`flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 ${
               step >= 2
-                ? "bg-primary text-white"
-                : "border border-muted-foreground text-muted-foreground"
+                ? "bg-gradient-to-r from-green-600 to-green-500 text-white shadow-lg"
+                : "border-2 border-gray-300 text-gray-400 bg-white"
             }`}
           >
             2
           </div>
-          <span className={step >= 2 ? "font-medium" : "text-muted-foreground"}>
+          <span
+            className={`text-sm font-medium transition-colors ${
+              step >= 2 ? "text-green-700" : "text-gray-400"
+            }`}
+          >
             Bio
           </span>
         </div>
-        <div className="h-0.5 w-10 bg-muted"></div>
+        <div
+          className={`h-1 w-10 rounded-full transition-colors ${
+            step >= 3 ? "bg-green-500" : "bg-gray-200"
+          }`}
+        ></div>
         <div className="flex items-center gap-2">
           <div
-            className={`flex h-8 w-8 items-center justify-center rounded-full ${
+            className={`flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 ${
               step >= 3
-                ? "bg-primary text-white"
-                : "border border-muted-foreground text-muted-foreground"
+                ? "bg-gradient-to-r from-green-600 to-green-500 text-white shadow-lg"
+                : "border-2 border-gray-300 text-gray-400 bg-white"
             }`}
           >
             3
           </div>
-          <span className={step >= 3 ? "font-medium" : "text-muted-foreground"}>
+          <span
+            className={`text-sm font-medium transition-colors ${
+              step >= 3 ? "text-green-700" : "text-gray-400"
+            }`}
+          >
             Availability
           </span>
         </div>
       </div>
 
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>
+      <Card className="w-full max-w-md relative bg-white/80 backdrop-blur-sm shadow-2xl border-0">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-bold">
             {step === 1 && "Select Your Interests"}
             {step === 2 && "Tell Us About Yourself"}
             {step === 3 && "Set Your Availability"}
@@ -225,8 +254,9 @@ export default function OnboardingPage() {
                     id={interest}
                     checked={selectedInterests.includes(interest)}
                     onCheckedChange={() => handleInterestToggle(interest)}
+                    className="data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600"
                   />
-                  <Label htmlFor={interest} className="text-sm">
+                  <Label htmlFor={interest} className="text-sm cursor-pointer">
                     {interest}
                   </Label>
                 </div>
@@ -243,7 +273,7 @@ export default function OnboardingPage() {
                   placeholder="Tell us about yourself, your major, hobbies, and what you're looking for in a friendship..."
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
-                  className="min-h-[150px]"
+                  className="min-h-[150px] bg-white/50 border-green-200 focus:border-green-500 focus:ring-green-500"
                 />
               </div>
             </div>
@@ -252,9 +282,13 @@ export default function OnboardingPage() {
           {step === 3 && (
             <div className="space-y-4">
               <Tabs defaultValue="Monday">
-                <TabsList className="grid w-full grid-cols-7">
+                <TabsList className="grid w-full grid-cols-7 bg-green-50">
                   {days.map((day) => (
-                    <TabsTrigger key={day} value={day}>
+                    <TabsTrigger
+                      key={day}
+                      value={day}
+                      className="data-[state=active]:bg-green-600 data-[state=active]:text-white"
+                    >
                       {day.substring(0, 3)}
                     </TabsTrigger>
                   ))}
@@ -262,7 +296,9 @@ export default function OnboardingPage() {
                 {days.map((day) => (
                   <TabsContent key={day} value={day} className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <Label>{day}</Label>
+                      <Label className="text-lg font-medium text-green-700">
+                        {day}
+                      </Label>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
@@ -294,7 +330,11 @@ export default function OnboardingPage() {
         </CardContent>
         <CardFooter className="flex justify-between">
           {step > 1 ? (
-            <Button variant="outline" onClick={() => setStep(step - 1)}>
+            <Button
+              variant="outline"
+              onClick={() => setStep(step - 1)}
+              className="border-green-200 hover:bg-green-50"
+            >
               Back
             </Button>
           ) : (
@@ -305,11 +345,16 @@ export default function OnboardingPage() {
             <Button
               onClick={() => setStep(step + 1)}
               disabled={step === 1 && selectedInterests.length < 3}
+              className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 shadow-lg"
             >
               Next
             </Button>
           ) : (
-            <Button onClick={handleSubmit} disabled={loading || !authisReady}>
+            <Button
+              onClick={handleSubmit}
+              disabled={loading || !authisReady}
+              className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 shadow-lg"
+            >
               {loading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
