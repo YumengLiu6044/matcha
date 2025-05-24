@@ -163,16 +163,6 @@ export default function OnboardingPage() {
                 : "border border-muted-foreground text-muted-foreground"
             }`}
           >
-            <span className="text-sm">1</span>
-          </div>
-        <div className="flex items-center gap-2">
-          <div
-            className={`flex h-8 w-8 items-center justify-center rounded-full ${
-              step >= 1
-                ? "bg-primary text-white"
-                : "border border-muted-foreground text-muted-foreground"
-            }`}
-          >
             1
           </div>
           <span className={step >= 1 ? "font-medium" : "text-muted-foreground"}>
