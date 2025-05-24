@@ -1,22 +1,12 @@
 import json
 import requests
-from pydantic import BaseModel
 from langchain.tools import Tool
+import html
 
 
-class RequestFormat(BaseModel):
-    query: str
-    limit: int = 20
-
-def get_campus_groups_events(query: str = "", limit: int = 20) -> str:
+def get_campus_groups_events(*args, **kwargs) -> str:
     """
     Fetches events from the UCI CampusGroups API based on a search query or category.
-
-    Args:
-        query (str): A search term for events (e.g., "hiking", "coding", "social").
-        category_id (str): The ID of a specific event category (e.g., "50920" for Wellness & Recreation).
-                           Refer to CampusGroups API documentation or previous API calls for valid IDs.
-        limit (int): The maximum number of events to return. Defaults to 20.
 
     Returns:
         str: A JSON string of events found, or an error message.
@@ -29,10 +19,9 @@ def get_campus_groups_events(query: str = "", limit: int = 20) -> str:
 
     params = {
         "range": 0,
-        "limit": limit,
+        "limit": 20,
         "order": "undefined",
         "filter7": "on_campus",
-        "search_word": query,
     }
 
 
@@ -41,6 +30,9 @@ def get_campus_groups_events(query: str = "", limit: int = 20) -> str:
         response.raise_for_status() # Raise an exception for HTTP errors (4xx or 5xx)
 
         data = response.json()
+        if len(data) == 0:
+            return json.dumps({"events": []})
+
         result_length = data[0]["counter"]
         result_length = int(result_length)
 
@@ -49,12 +41,11 @@ def get_campus_groups_events(query: str = "", limit: int = 20) -> str:
 
         extracted_response = []
 
-        for result_index in range(1, result_length + 1):
-            result = data[result_index]
+        for result in data:
             expected_fields = result["fields"].split(",")
             extracted = {}
             for index, field in enumerate(expected_fields):
-                extracted[field] = result[f"p{index}"]
+                extracted[field] = html.unescape(result[f"p{index}"] or "")
 
             extracted_response.append(extracted)
 
@@ -76,10 +67,8 @@ campus_groups_events_tool = Tool(
     name="get_campus_groups_events",
     func=get_campus_groups_events,
     description="""
-    Fetch events from the UCI CampusGroups API.
-    Input should be a JSON string with 'query' and optionally 'limit' keys.
-    For example: '{"query": "hiking", "limit": 5}' or '{"query": "coding"}'
-    Use 'query' to search for general terms like "social", "sports", "tech", "art", "music", "volunteering", "outdoors", "games", "film", "wellness".
-    """,
-    args_schema=RequestFormat # This is a placeholder for more detailed schema validation if needed
+    Useful for fetching a list of upcoming events from the UCI CampusGroups API.
+    This tool takes no input parameters and returns a general list of events.
+    The LLM should analyze the returned events to find relevant matches for the users.
+    """
 )
