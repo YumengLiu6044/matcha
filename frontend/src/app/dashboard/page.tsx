@@ -43,36 +43,10 @@ const CAMPUS_ACTIVITIES = [
 	"Play basketball at the ARC courts",
 ];
 
-// Sample user data
-const USERS: UserData[] = [
-	{
-		name: "Alex Kim",
-		major: "Computer Science",
-		year: "Junior",
-		interests: ["Technology", "Gaming", "Music"],
-		profileURL:
-			"https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg?height=80&width=80",
-	},
-	{
-		name: "Jordan Lee",
-		major: "Biology",
-		year: "Sophomore",
-		interests: ["Science", "Outdoor Activities", "Reading"],
-		profileURL:
-			"https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg?height=80&width=80",
-	},
-	{
-		name: "Taylor Chen",
-		major: "Business Economics",
-		year: "Senior",
-		interests: ["Entrepreneurship", "Sports & Fitness", "Travel"],
-		profileURL:
-			"https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg?height=80&width=80",
-	},
-];
 
 export default function DashboardPage() {
 	const [loading, setLoading] = useState(false);
+  const USERS = useUserDataStore((state) => state.others)
 	const [currentMatch, setCurrentMatch] = useState(USERS[0]);
 	const [activity, setActivity] = useState(CAMPUS_ACTIVITIES[0]);
 	const [date, setDate] = useState("May 15, 2025");
