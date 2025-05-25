@@ -114,7 +114,7 @@ function CardDiv(props: Profile) {
 
 	return (
 		<div
-			className="node-label rounded-xl p-2 flex flex-col items-center gap-2 cursor-pointer pointer-events-auto transition-all bg-white border-1 hover:scale-120"
+			className="node-label transition-all rounded-xl p-2 flex flex-col items-center gap-2 pointer-events-auto bg-white border-1 hover:scale-110  border border-green-700"
 			style={{ borderColor: "#78977c" }}
 			ref={divRef}
 		>
