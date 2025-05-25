@@ -6,6 +6,8 @@ import ForceGraph from "react-force-graph-3d";
 import { CSS2DObject, CSS2DRenderer } from "three/examples/jsm/Addons.js";
 import { useEffect, useRef, useState } from "react";
 import { Profile, Node } from "@/util/types";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 
 const profiles: Profile[] = [
 	{
@@ -76,7 +78,6 @@ const profiles: Profile[] = [
 	},
 ];
 
-
 // Random connected graph
 const gData = {
 	nodes: profiles,
@@ -143,6 +144,8 @@ const extraRenderers = [new CSS2DRenderer()];
 
 export default function Network() {
 	const graphRef = useRef<any>(null);
+	const graphContainerRef = useRef<HTMLDivElement | null>(null);
+	const [graphSize, setGraphSize] = useState<number[]>([0, 0]);
 	const [query, setQuery] = useState("");
 	const [renderedData, setRenderedData] = useState<Node>(gData);
 
@@ -169,33 +172,58 @@ export default function Network() {
 		graphRef.current?.refresh();
 	}, [query]);
 
+	useEffect(() => {
+		if (!graphContainerRef.current) return;
+
+		setGraphSize([
+			graphContainerRef.current.clientWidth,
+			graphContainerRef.current.clientHeight,
+		]);
+	}, [graphContainerRef]);
+
 	return (
-		<div className="flex flex-col gap-3 p-10 ">
-			<input
-				className="w-50 py-1 border-1 rounded-md border-green-800 px-2"
-				placeholder="Names"
-				value={query}
-				onChange={(e) => {
-					setQuery(e.target.value);
-				}}
-			></input>
-			<ForceGraph
-				height={window.screen.height * 0.9}
-				graphData={renderedData}
-				linkOpacity={1}
-				ref={graphRef}
-				backgroundColor="#e3fced"
-				linkColor={() => "#78977c"}
-				linkWidth={0.5}
-				extraRenderers={extraRenderers}
-				nodeThreeObject={(node: Profile) => {
-					const container = document.createElement("div");
-					const root = ReactDOM.createRoot(container);
-					root.render(<CardDiv {...node}></CardDiv>);
-					return new CSS2DObject(container);
-				}}
-				nodeThreeObjectExtend={false}
-			/>
+		<div className="container py-8 flex flex-col gap-5">
+			<div className="mb-8">
+				<h1 className="text-3xl font-bold">Connection Graph</h1>
+				<p className="text-muted-foreground">
+					See your growing connections with UC Irvine students
+				</p>
+			</div>
+			<div className="relative max-w-md">
+				<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+				<Input
+					type="text"
+					placeholder="Search friends by name..."
+					value={query}
+					onChange={(e) => setQuery(e.target.value)}
+					className="pl-10 bg-white shadow-sm"
+				/>
+			</div>
+			<div
+				className="w-full h-100 rounded-xl overflow-clip border"
+				ref={graphContainerRef}
+			>
+				<ForceGraph
+					width={graphSize[0]}
+					graphData={renderedData}
+					linkOpacity={1}
+					ref={graphRef}
+					backgroundColor="#e3fced"
+					linkColor={() => "#78977c"}
+					linkWidth={0.5}
+					extraRenderers={extraRenderers}
+					nodeThreeObject={(node: Profile) => {
+						const container = document.createElement("div");
+						const root = ReactDOM.createRoot(container);
+						root.render(<CardDiv {...node} />);
+						const label = new CSS2DObject(container);
+
+
+						return label;
+					}}
+					nodeThreeObjectExtend={false}
+				/>
+			</div>
 		</div>
 	);
 }
