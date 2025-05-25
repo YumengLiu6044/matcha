@@ -184,8 +184,8 @@ export default function NetworkComponent() {
 	return (
 		<div className="container py-8 flex flex-col gap-5">
 			<div className="mb-8">
-				<h1 className="text-3xl font-bold">Connection Graph</h1>
-				<p className="text-muted-foreground">
+				<h1 className="text-4xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">Connection Graph</h1>
+				<p className="text-gray-600 mt-2">
 					See your growing connections with UC Irvine students
 				</p>
 			</div>
