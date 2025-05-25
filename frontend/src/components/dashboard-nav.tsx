@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { getAuth, signOut } from "firebase/auth";
+import { app } from "@/lib/firebase";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -17,7 +19,6 @@ import {
   Globe,
   Home,
   LogOut,
-
   Settings,
   User,
   Users,
@@ -32,7 +33,6 @@ const navItems = [
   { href: "/dashboard/network", label: "Network", icon: Globe },
   { href: "/dashboard/hangouts", label: "Hangouts", icon: CalendarDays },
   { href: "/dashboard/profile", label: "Profile", icon: User },
-
 ];
 
 export default function DashboardNav() {
@@ -129,7 +129,14 @@ export default function DashboardNav() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
+              <DropdownMenuItem
+                asChild
+                onClick={async () => {
+                  const auth = getAuth(app);
+                  await signOut(auth);
+                  window.location.href = "/home";
+                }}
+              >
                 <Link
                   href="/"
                   className="flex w-full cursor-pointer items-center"

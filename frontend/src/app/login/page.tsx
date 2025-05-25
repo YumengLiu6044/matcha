@@ -64,11 +64,11 @@ export default function LoginPage() {
           <Image
             src="/images/matcha-logo.png"
             alt="Matcha Logo"
-            width={24}
-            height={24}
+            width={50}
+            height={50}
             className="rounded-full"
           />
-          <span className="font-bold text-green-600">Back to Matcha</span>
+          <span className="font-bold text-2xl text-green-600">Back to Matcha</span>
         </Button>
       </Link>
 
