@@ -121,7 +121,7 @@ export default function DashboardNav() {
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link
-                  href="/dashboard/settings"
+                  href="/dashboard"
                   className="flex w-full cursor-pointer items-center"
                 >
                   <Settings className="mr-2 h-4 w-4" />

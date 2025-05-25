@@ -199,30 +199,56 @@ export default function Network() {
 					className="pl-10 bg-white shadow-sm"
 				/>
 			</div>
-			<div
-				className="w-full h-100 rounded-xl overflow-clip border"
-				ref={graphContainerRef}
-			>
-				<ForceGraph
-					width={graphSize[0]}
-					graphData={renderedData}
-					linkOpacity={1}
-					ref={graphRef}
-					backgroundColor="#e3fced"
-					linkColor={() => "#78977c"}
-					linkWidth={0.5}
-					extraRenderers={extraRenderers}
-					nodeThreeObject={(node: Profile) => {
-						const container = document.createElement("div");
-						const root = ReactDOM.createRoot(container);
-						root.render(<CardDiv {...node} />);
-						const label = new CSS2DObject(container);
 
+			<div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+				<div
+					className="lg:col-span-2 h-100 rounded-xl overflow-clip border"
+					ref={graphContainerRef}
+				>
+					<ForceGraph
+						width={graphSize[0]}
+						graphData={renderedData}
+						linkOpacity={1}
+						ref={graphRef}
+						backgroundColor="#e3fced"
+						linkColor={() => "#78977c"}
+						linkWidth={0.5}
+						extraRenderers={extraRenderers}
+						nodeThreeObject={(node: Profile) => {
+							const container = document.createElement("div");
+							const root = ReactDOM.createRoot(container);
+							root.render(<CardDiv {...node} />);
+							const label = new CSS2DObject(container);
 
-						return label;
-					}}
-					nodeThreeObjectExtend={false}
-				/>
+							return label;
+						}}
+						nodeThreeObjectExtend={false}
+					/>
+				</div>
+				<div className="mt-6 grid grid-cols-1 gap-4">
+					<div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+						<div className="text-2xl font-bold text-blue-600">
+							{10}
+						</div>
+						<div className="text-sm text-gray-600">
+							Total People
+						</div>
+					</div>
+					<div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+						<div className="text-2xl font-bold text-green-600">
+							{12}
+						</div>
+						<div className="text-sm text-gray-600">Connections</div>
+					</div>
+					<div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+						<div className="text-2xl font-bold text-purple-600">
+							{3.2}
+						</div>
+						<div className="text-sm text-gray-600">
+							Avg Connections
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	);
