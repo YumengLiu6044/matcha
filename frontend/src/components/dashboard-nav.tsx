@@ -14,8 +14,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   CalendarDays,
+  Globe,
   Home,
   LogOut,
+
   Settings,
   User,
   Users,
@@ -27,8 +29,10 @@ import { useUserDataStore } from "@/util/store";
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
   { href: "/dashboard/matches", label: "Matches", icon: Users },
+  { href: "/dashboard/network", label: "Network", icon: Globe },
   { href: "/dashboard/hangouts", label: "Hangouts", icon: CalendarDays },
   { href: "/dashboard/profile", label: "Profile", icon: User },
+
 ];
 
 export default function DashboardNav() {

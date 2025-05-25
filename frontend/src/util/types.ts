@@ -46,3 +46,20 @@ export type HangoutStore = {
   setIsLoading: (newState: boolean) => void;
   setSuggestedHangout: (newState: Hangout) => void
 };
+
+export type Profile = {
+	id: number;
+	name: string;
+	profileURL: string;
+	interests: string[];
+};
+
+export type Link = {
+	source: number;
+	target: number;
+};
+
+export type Node = {
+	nodes: Profile[];
+	links: Link[];
+};
