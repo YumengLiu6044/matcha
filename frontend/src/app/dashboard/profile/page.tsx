@@ -301,13 +301,13 @@ export default function ProfilePage() {
               </TabsTrigger>
               <TabsTrigger
                 value="interests"
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200"
+                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-600 data-[state=active]:to-green-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200"
               >
                 Interests
               </TabsTrigger>
               <TabsTrigger
                 value="availability"
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-purple-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200"
+                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-600 data-[state=active]:to-green-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200"
               >
                 Availability
               </TabsTrigger>
@@ -431,10 +431,10 @@ export default function ProfilePage() {
 
             <TabsContent value="interests">
               <Card className="bg-white/80 backdrop-blur-sm shadow-xl border-0 overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-blue-400"></div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-green-400"></div>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-xl">
-                    <Heart className="h-5 w-5 text-blue-600" />
+                    <Heart className="h-5 w-5 text-green-600" />
                     Your Interests
                   </CardTitle>
                   <CardDescription>
@@ -453,7 +453,7 @@ export default function ProfilePage() {
                           id={interest}
                           checked={selectedInterests.includes(interest)}
                           onCheckedChange={() => handleInterestToggle(interest)}
-                          className="data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
+                          className="data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600"
                         />
                         <Label
                           htmlFor={interest}
@@ -465,11 +465,11 @@ export default function ProfilePage() {
                     ))}
                   </div>
                 </CardContent>
-                <CardFooter className="bg-gray-50/50 border-t border-blue-100">
+                <CardFooter className="bg-gray-50/50 border-t border-green-100">
                   <Button
                     onClick={handleSave}
                     disabled={loading || selectedInterests.length < 3}
-                    className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 shadow-lg"
+                    className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 shadow-lg"
                   >
                     {loading ? (
                       <>
@@ -486,10 +486,10 @@ export default function ProfilePage() {
 
             <TabsContent value="availability">
               <Card className="bg-white/80 backdrop-blur-sm shadow-xl border-0 overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-purple-400"></div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-green-400"></div>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-xl">
-                    <Clock className="h-5 w-5 text-purple-600" />
+                    <Clock className="h-5 w-5 text-green-600" />
                     Your Availability
                   </CardTitle>
                   <CardDescription>
@@ -498,12 +498,12 @@ export default function ProfilePage() {
                 </CardHeader>
                 <CardContent>
                   <Tabs defaultValue="Monday">
-                    <TabsList className="grid w-full grid-cols-7 bg-purple-50">
+                    <TabsList className="grid w-full grid-cols-7 bg-green-50">
                       {days.map((day) => (
                         <TabsTrigger
                           key={day}
                           value={day}
-                          className="data-[state=active]:bg-purple-600 data-[state=active]:text-white"
+                          className="data-[state=active]:bg-green-600 data-[state=active]:text-white"
                         >
                           {day.substring(0, 3)}
                         </TabsTrigger>
@@ -512,7 +512,7 @@ export default function ProfilePage() {
                     {days.map((day) => (
                       <TabsContent key={day} value={day} className="space-y-4">
                         <div className="flex items-center justify-between">
-                          <Label className="text-lg font-medium text-purple-700">
+                          <Label className="text-lg font-medium text-green-700">
                             {day}
                           </Label>
                         </div>
@@ -520,7 +520,7 @@ export default function ProfilePage() {
                           <div className="space-y-2">
                             <Label
                               htmlFor={`${day}-start`}
-                              className="text-purple-700 font-medium"
+                              className="text-green-700 font-medium"
                             >
                               Start Time
                             </Label>
@@ -535,7 +535,7 @@ export default function ProfilePage() {
                           <div className="space-y-2">
                             <Label
                               htmlFor={`${day}-end`}
-                              className="text-purple-700 font-medium"
+                              className="text-green-700 font-medium"
                             >
                               End Time
                             </Label>
@@ -552,11 +552,11 @@ export default function ProfilePage() {
                     ))}
                   </Tabs>
                 </CardContent>
-                <CardFooter className="bg-gray-50/50 border-t border-purple-100">
+                <CardFooter className="bg-gray-50/50 border-t border-green-100">
                   <Button
                     onClick={handleSave}
                     disabled={loading}
-                    className="bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 shadow-lg"
+                    className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 shadow-lg"
                   >
                     {loading ? (
                       <>
