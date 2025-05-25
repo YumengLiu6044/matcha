@@ -156,7 +156,7 @@ export default function ProfilePage() {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const selected = e.target.files[0];
-      if (selected.size > 5000000) {
+      if (selected.size > 20 * 1024 * 1024) {
         console.log("File Too Big");
         return;
       }
