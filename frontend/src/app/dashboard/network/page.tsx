@@ -226,25 +226,25 @@ export default function Network() {
 					/>
 				</div>
 				<div className="mt-6 grid grid-cols-1 gap-4">
-					<div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-						<div className="text-2xl font-bold text-blue-600">
+					<div className="p-4">
+						<div className="text-6xl font-bold text-green-600">
 							{10}
 						</div>
-						<div className="text-sm text-gray-600">
+						<div className="text-xl text-gray-600">
 							Total People
 						</div>
 					</div>
-					<div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-						<div className="text-2xl font-bold text-green-600">
+					<div className="p-4">
+						<div className="text-6xl font-bold text-green-600">
 							{12}
 						</div>
-						<div className="text-sm text-gray-600">Connections</div>
+						<div className="text-xl text-gray-600">Connections</div>
 					</div>
-					<div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-						<div className="text-2xl font-bold text-purple-600">
+					<div className="p-4">
+						<div className="text-6xl font-bold text-green-600">
 							{3.2}
 						</div>
-						<div className="text-sm text-gray-600">
+						<div className="text-xl text-gray-600">
 							Avg Connections
 						</div>
 					</div>
