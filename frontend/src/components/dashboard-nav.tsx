@@ -134,7 +134,7 @@ export default function DashboardNav() {
                 onClick={async () => {
                   const auth = getAuth(app);
                   await signOut(auth);
-                  window.location.href = "/home";
+                  window.location.href = "/";
                 }}
               >
                 <Link
