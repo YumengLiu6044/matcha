@@ -1,4 +1,5 @@
 "use client";
+
 import { LoaderCircle, User, Camera, Clock, Heart } from "lucide-react";
 import type React from "react";
 
@@ -254,7 +255,7 @@ export default function ProfilePage() {
                         alt="Profile"
                       />
                       <AvatarFallback className="bg-gradient-to-r from-green-600 to-green-500 text-white text-2xl">
-                        {name.charAt(0)}
+                        {selfUserData.name.charAt(0)}
                       </AvatarFallback>
                     </>
                   )}
