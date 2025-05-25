@@ -56,7 +56,7 @@ export default function DashboardNav() {
                 alt="Matcha Logo"
                 width={45}
                 height={45}
-                className="rounded-full"
+                className="rounded-full p-0.1 border border-green-200"
               />
               <span className="text-xl font-bold text-primary">Matcha</span>
             </div>
@@ -90,8 +90,8 @@ export default function DashboardNav() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-12 w-15">
-                  <AvatarImage src={selfUserData.profileURL} alt="User" />
+                <Avatar className="h-12 w-13 outline outline-green-200">
+                  <AvatarImage src={selfUserData.profileURL} alt="User"/>
                   <AvatarFallback>
                     {selfUserData?.name ? selfUserData.name.charAt(0) : "?"}
                   </AvatarFallback>

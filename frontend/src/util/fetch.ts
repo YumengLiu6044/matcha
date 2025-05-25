@@ -36,6 +36,7 @@ export function getHangoutRecommendation() {
 				.recommendation as JointRecommendedEvent;
 			setSuggestedHangout({
 				...parsed,
+				description: data.joint_recommendation.message,
 				time: parsed.time ?? "10:00 AM",
 				date: parsed.date ?? "May 25, 2025",
 				users: [match, self],

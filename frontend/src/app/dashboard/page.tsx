@@ -14,9 +14,9 @@ import {
   ThumbsDown,
   ThumbsUp,
   Users,
-  Sparkles,
   Heart,
   Loader2,
+  Sparkles,
 } from "lucide-react"
 import { getAuth, onAuthStateChanged } from "@firebase/auth"
 import { app, db } from "@/lib/firebase"
@@ -165,14 +165,17 @@ export default function DashboardPage() {
                         <span>{suggestedHangout?.location}</span>
                       </div>
                       <div className="mt-3 p-3 bg-white/80 rounded-lg border border-green-200">
+                        <span className="flex items-center gap-3 text-sm text-green-500"><Sparkles className=""/>AI Recommendation:</span>
                         <div className="font-medium text-green-800">{suggestedHangout?.name}</div>
+
+                        <span className="text-muted-foreground">{suggestedHangout?.description}</span>
                       </div>
                     </div>
                   )}
                 </div>
               </div>
             </CardContent>
-            <CardFooter className="flex justify-between bg-gray-50/50 border-t border-green-100">
+            <CardFooter className="flex justify-between">
               <Button
                 variant="outline"
                 size="lg"
