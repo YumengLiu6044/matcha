@@ -255,7 +255,7 @@ export default function ProfilePage() {
                         alt="Profile"
                       />
                       <AvatarFallback className="bg-gradient-to-r from-green-600 to-green-500 text-white text-2xl">
-                        {selfUserData.name.charAt(0)}
+                        {}
                       </AvatarFallback>
                     </>
                   )}
