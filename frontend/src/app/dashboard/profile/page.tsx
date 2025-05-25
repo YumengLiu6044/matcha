@@ -88,7 +88,6 @@ export default function ProfilePage() {
   });
   const [loading, setLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [_, setSelectedFile] = useState<File | null>(null);
   const [profileURL, setProfileURL] = useState("");
 
   const handleInterestToggle = (interest: string) => {
@@ -160,7 +159,6 @@ export default function ProfilePage() {
         console.log("File Too Big");
         return;
       }
-      setSelectedFile(selected);
 
       if (selected) {
         setIsUploading(true);

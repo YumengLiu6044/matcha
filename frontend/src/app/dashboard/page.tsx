@@ -27,7 +27,6 @@ import { acceptMatch, getHangoutRecommendation } from "@/util/fetch"
 import { generateMatch } from "@/util/fetch"
 
 export default function DashboardPage() {
-  const [loading, setLoading] = useState(false)
   const others = useUserDataStore((state) => state.others)
   const currentMatchIndex = useUserDataStore((state) => state.suggestedIndex)
 
@@ -152,7 +151,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
                   ) : (
-                    <div className="space-y-3">
+                    <div className="space-y-3 animate-fade-in">
                       <div className="flex items-center gap-2 text-green-700">
                         <CalendarDays className="h-4 w-4" />
                         <span>{suggestedHangout?.date ?? "May 25, 2025"}</span>
@@ -179,7 +178,7 @@ export default function DashboardPage() {
                 size="lg"
                 className="gap-2 border-green-200 hover:bg-green-50 hover:text-green-700 hover:border-green-300"
                 onClick={generateMatch}
-                disabled={loading}
+                disabled={isLoadingRecommendation}
               >
                 <ThumbsDown className="h-4 w-4" />
                 Skip
@@ -188,16 +187,16 @@ export default function DashboardPage() {
                 variant="outline"
                 size="icon"
                 onClick={getHangoutRecommendation}
-                disabled={loading}
+                disabled={isLoadingRecommendation}
                 className="rounded-full border-green-200 hover:bg-green-50 hover:border-green-300"
               >
-                <RefreshCw className={`h-4 w-4 text-green-600 ${loading ? "animate-spin" : ""}`} />
+                <RefreshCw className={`h-4 w-4 text-green-600 ${isLoadingRecommendation ? "animate-spin" : ""}`} />
               </Button>
               <Button
                 size="lg"
                 className="gap-2 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 shadow-lg"
                 onClick={acceptMatch}
-                disabled={loading}
+                disabled={isLoadingRecommendation}
               >
                 <ThumbsUp className="h-4 w-4" />
                 Connect

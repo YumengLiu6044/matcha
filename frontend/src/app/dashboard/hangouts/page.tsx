@@ -75,7 +75,7 @@ const PAST_HANGOUTS = [
 ]
 
 export default function HangoutsPage() {
-  const [activeTab, setActiveTab] = useState("upcoming")
+
 
   return (
     <div className="container py-8">
@@ -86,7 +86,7 @@ export default function HangoutsPage() {
         <p className="text-gray-600 mt-2">Manage your scheduled and pending hangouts with UCI friends</p>
       </div>
 
-      <Tabs defaultValue="upcoming" onValueChange={setActiveTab}>
+      <Tabs defaultValue="upcoming">
         <TabsList className="mb-6 grid w-full grid-cols-3 bg-white/80 backdrop-blur-sm shadow-lg border-0 p-1">
           <TabsTrigger
             value="upcoming"
