@@ -173,11 +173,11 @@ export default function MatchesPage() {
                 </div>
               </div>
             </CardContent>
-            <CardFooter className="flex justify-between bg-gray-50/50 border-t border-green-100">
+            <CardFooter className="flex justify-between">
               <Button
                 variant="outline"
                 size="lg"
-                className="gap-2 border-red-200 hover:bg-red-50 hover:text-red-700 hover:border-red-300"
+                className="gap-2 border-green-200 hover:bg-green-50 text-green-700 hover:border-green-300"
                 onClick={generateMatch}
                 disabled={loading}
               >
